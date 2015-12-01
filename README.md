@@ -1,0 +1,2 @@
+# shanBayTranslateChromeExtention
+基于扇贝API的chrome浏览器英语翻译插件
