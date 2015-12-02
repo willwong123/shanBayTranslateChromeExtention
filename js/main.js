@@ -86,7 +86,7 @@ let translate = word => {
 		.catch(err => console.log(err))
 }
 
-let showPop = (e) => {
+let showPop = e => {
 	let word = getWord()
 	if (!word) return;
 	ex = e.pageX
