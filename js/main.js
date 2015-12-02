@@ -41,41 +41,32 @@ let positionPop = (x,y) => {
 	}
 }
 
-let renderPop = res => {
-	let pop = document.querySelector("#popupShanbay")
-	let cont = pop.querySelector(".content")
-	let pronunciation = pop.querySelector(".pronunciation")
-	let definition = pop.querySelector(".definition")
-	let audio = pop.querySelector("audio")
-	if (res.status_code) {
-		cont.innerHTML = res.msg
-	} else {
-		cont.innerHTML = res.data.content
-	}
-	pronunciation.innerHTML = res.data.pronunciation ? res.data.pronunciation : '无'
-	definition.innerHTML = res.data.definition ? res.data.definition : '无'
-	audio.setAttribute("data-src", res.data.audio)
-	pop.style.opacity = 1
-}
-
 let pronunceWord = () => {
 	document.querySelector("audio").src = document.querySelector("audio").getAttribute("data-src")
 }
 
-let createPop = () => {
+let createPop = res => {
 	while (!document.querySelector("#popupShanbay")) {
 		let pop = document.createElement("div")
+		let popInnerHtml
 		pop.id = "popupShanbay"
 		pop.classList.add("popup")
-		let popInnerHtml = '<section style="opacity:1">'+
-				'<p><b class="content"></b></p>'+
-				'<p hidden><audio autoplay controls src="" data-src=""/></p>'+
-				'<p>发音：[<span class="pronunciation"></span>] <a href="javascript:;" class="say">发音</a></p>'+
-				'<p>翻译：<span class="definition"></span></p>'+
-			'</section>';
+		if (res.status_code) {
+			popInnerHtml = `<section style="opacity:1">
+				<p><b class="content">${res.msg}</b></p>
+			</section>`;
+		} else {
+			popInnerHtml = `<section style="opacity:1">
+				<p><b class="content">${res.data.content}</b></p>
+				<p hidden><audio autoplay controls src="" data-src="${res.data.audio}"/></p>
+				<p>发音：[<span class="pronunciation">${res.data.pronunciation}</span>] <a href="javascript:;" class="sayWord">发音</a></p>
+				<p>翻译：<span class="definition">${res.data.definition}</span></p>
+			</section>`;
+		}
+		
 		pop.innerHTML = popInnerHtml
 		body.appendChild(pop)
-		pop.querySelector(".say").addEventListener("click",e => {
+		pop.querySelector(".sayWord").addEventListener("click",e => {
 			e.stopPropagation()
 			pronunceWord()
 		},false)
@@ -89,8 +80,7 @@ let translate = word => {
 	fetch(req)
 		.then(res => res.json())
 		.then(res => {
-			createPop()
-			renderPop(res)
+			createPop(res)
 		})
 		.then(() => {positionPop(ex,ey)})
 		.catch(err => console.log(err))
@@ -112,7 +102,7 @@ let removePop = () => {
 
 let styl = document.createElement("style")
 
-let stylContent = document.createTextNode("#popupShanbay{display: block !important;}.popup{position:absolute;z-index:12340000;width:200px;line-height:1.5;border:1px solid #ddd;color:#333;background:#fff}.popup header{height:25px;font-size:14px;font-weight:700;padding:2px 10px}.popup section{padding:0 10px}.popup section p{margin:0;padding:2px 0}")
+let stylContent = document.createTextNode("#popupShanbay{display: block !important;}#popupShanbay [hidden]{display:none !important;}.popup{position:absolute;z-index:12340000;width:200px;line-height:1.5;border:1px solid #ddd;color:#333;background:#fff}.popup header{height:25px;font-size:14px;font-weight:700;padding:2px 10px}.popup section{padding:0 10px}.popup section p{margin:0;padding:2px 0}.sayWord{display: inline-block;vertical-align:middle;position:relative;width:18px;height:18px;overflow:hidden;border-radius:50%;border: 1px solid #333;text-indent:-99em;}.sayWord:before{content:'';position:absolute;top:50%;left:50%;transform:translateY(-50%) translateX(-35%);border:6px solid #333;border-right-width:0;border-top-color:transparent;border-bottom-color:transparent;}")
 
 styl.styleSheet ? (styl.styleSheet.cssText = stylContent.nodeValue) : styl.appendChild(stylContent)
 	
