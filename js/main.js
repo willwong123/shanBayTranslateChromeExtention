@@ -42,7 +42,8 @@ let positionPop = (x,y) => {
 }
 
 let pronunceWord = () => {
-	document.querySelector("audio").src = document.querySelector("audio").getAttribute("data-src")
+	let audio = document.querySelector("audio")
+	audio.src = audio.getAttribute("data-src")
 }
 
 let createPop = res => {
