@@ -1,0 +1,22 @@
+{
+  "name": "shanBayTranslateChromeExtention",
+  "version": "1.0.0",
+  "description": "本插件是基于扇贝API而开发的chrome浏览器英语翻译插件",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willwong123/shanBayTranslateChromeExtention.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/willwong123/shanBayTranslateChromeExtention/issues"
+  },
+  "homepage": "https://github.com/willwong123/shanBayTranslateChromeExtention#readme",
+  "devDependencies": {
+  }
+}
